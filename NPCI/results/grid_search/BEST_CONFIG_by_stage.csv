@@ -1,0 +1,44 @@
+﻿stage,parameter,value
+Stage 1: Lesion response,n_seed_windows,64
+Stage 1: Lesion response,lesion_strength,0.5
+Stage 1: Lesion response,horizon,20
+Stage 1: Lesion response,lesion_mode,subtract
+Stage 2-A: Screening,tau,1
+Stage 2-A: Screening,max_candidate_nodes,50
+Stage 2-A: Screening,min_candidate_nodes,30
+Stage 2-A: Screening,top_k_direct_lagged,40
+Stage 2-A: Screening,top_k_response,30
+Stage 2-A: Screening,top_k_fc,0
+Stage 2-A: Screening,w_lagged,1.0
+Stage 2-A: Screening,w_response,0.6
+Stage 2-A: Screening,w_fc,0.0
+Stage 2-B: LPCMCI,tau_min,1
+Stage 2-B: LPCMCI,tau_max,1
+Stage 2-B: LPCMCI,pc_alpha,0.005
+Stage 2-B: LPCMCI,alpha_level,
+Stage 2-C: Lesion neighborhood,min_lesion_sub_nodes,8
+Stage 2-C: Lesion neighborhood,max_lesion_sub_nodes,30
+Stage 2-C: Lesion neighborhood,expand_to_second_order,True
+Stage 2-D: FC-constrained pruning,max_edges,20
+Stage 2-D: FC-constrained pruning,prune_alpha_level,0.01
+Stage 2-D: FC-constrained pruning,strong_quantile,0.8
+Stage 2-D: FC-constrained pruning,causal_weight,0.8
+Stage 2-D: FC-constrained pruning,fc_weight,0.2
+Stage 2-D: FC-constrained pruning,max_direct_lesion_edges,35
+Stage 2-D: FC-constrained pruning,stage2_selection_level,level3_core_direct
+Stage 3: Intervention search,alpha_traj,1.0
+Stage 3: Intervention search,beta_fc,0.8
+Stage 3: Intervention search,lambda_node,0.0
+Stage 3: Intervention search,lambda_strength,0.01
+Stage 3: Intervention search,lambda_temporal,0.0
+Stage 3: Intervention search,signs,"(-1, 1)"
+Stage 3: Intervention search,strengths,"(0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7)"
+Stage 3: Intervention search,schedules,"('constant', 'early_pulse', 'middle_pulse', 'late_pulse', 'ramp_up', 'ramp_decay', 'exponential_decay')"
+Stage 3: Intervention search,run_greedy,True
+Stage 3: Intervention search,max_interventions,3
+Stage 3: Intervention search,top_m_per_step,20
+Stage 3: Intervention search,min_marginal_gain,0.0001
+Stage 3: Intervention search,force_accept_first,True
+Runtime,random_state,123
+Runtime,batch_size,256
+Runtime,standardize,auto

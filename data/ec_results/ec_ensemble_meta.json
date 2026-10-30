@@ -1,0 +1,7 @@
+{
+  "mode": "ensemble",
+  "mode_label": "Temporal-consensus-screened NPI",
+  "screen_first": true,
+  "updated_at": 1787908294.6901386,
+  "file": "E:\\脑扰动可视化2.0\\data\\ec_results\\ec_ensemble.npz"
+}

@@ -1,0 +1,19 @@
+{
+  "version": 3,
+  "key": "fask",
+  "label": "FASK",
+  "params": {
+    "two_cycle_alpha": 0.01,
+    "penalty_discount": 2.0,
+    "max_density": 0.1,
+    "timeout_seconds": 900
+  },
+  "shape": [
+    360,
+    360
+  ],
+  "edge_count": 1016,
+  "density": 0.007861343237387805,
+  "computed_at": 1788949185.5435383,
+  "data_file": "data/causal_mask_results/fask.npz"
+}

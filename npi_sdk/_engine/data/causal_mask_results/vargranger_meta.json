@@ -1,0 +1,19 @@
+{
+  "version": 3,
+  "key": "vargranger",
+  "label": "VAR-Granger",
+  "params": {
+    "max_lag": 8,
+    "alpha": 0.05,
+    "min_effect": 0.001,
+    "max_density": 0.12
+  },
+  "shape": [
+    360,
+    360
+  ],
+  "edge_count": 15509,
+  "density": 0.1200015475085113,
+  "computed_at": 1787907940.7315192,
+  "data_file": "data/causal_mask_results/vargranger.npz"
+}

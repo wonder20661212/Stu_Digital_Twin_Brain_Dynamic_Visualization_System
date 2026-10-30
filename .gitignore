@@ -1,0 +1,66 @@
+# Python bytecode and caches
+**/__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Python virtual environments
+.venv/
+.venv*/
+venv/
+env/
+**/.venv/
+**/.venv*/
+
+# IDE and operating-system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Build artifacts and packaged SDK files
+build/
+build_backup_*/
+dist/
+**/build/
+**/dist/
+*.egg-info/
+*.whl
+
+# Archives, logs, and temporary files
+*.7z
+*.zip
+*.rar
+*.log
+*.tmp
+*.bak
+~$*
+
+# Runtime temporary and generated intervention results
+data/external_causal_tmp/
+data/npci_intervention_results/
+npi_sdk/_engine/data/external_causal_tmp/
+npi_sdk/_engine/data/npci_intervention_results/
+
+# Large raw/derived research datasets
+NPCI/data/raw/
+NPCI/data/derived/
+npi_sdk/_engine/NPCI/data/raw/
+npi_sdk/_engine/NPCI/data/derived/
+
+# Real fMRI data should not be published by default
+real_fMRI_data/
+npi_sdk/_engine/real_fMRI_data/
+
+# Local secrets and machine-specific configuration
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+secrets.json
+credentials.json
+

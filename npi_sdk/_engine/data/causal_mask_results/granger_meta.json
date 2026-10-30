@@ -1,0 +1,21 @@
+{
+  "version": 3,
+  "key": "granger",
+  "label": "Granger",
+  "params": {
+    "max_lag": 3,
+    "alpha": 0.05,
+    "min_effect": 0.001,
+    "max_density": 0.12,
+    "max_candidates_per_target": null,
+    "full_tigramite": false
+  },
+  "shape": [
+    360,
+    360
+  ],
+  "edge_count": 15509,
+  "density": 0.1200015475085113,
+  "computed_at": 1787907940.6981988,
+  "data_file": "data/causal_mask_results/granger.npz"
+}

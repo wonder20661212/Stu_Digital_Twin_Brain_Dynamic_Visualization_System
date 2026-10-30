@@ -1,0 +1,4 @@
+Nodes,Screen nodes,Compression ratio,Lesion node coverage,Lesion edge coverage,Global edge coverage,Screening node FPR
+30,16,0.533,0.652,0.622,0.533,0.15
+45,25,0.556,0.673,0.636,0.52,0.174
+60,33,0.55,0.695,0.613,0.418,0.261

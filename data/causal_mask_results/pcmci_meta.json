@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "key": "pcmci",
+  "label": "PCMCI Screen",
+  "params": {
+    "max_lag": 2,
+    "alpha": 0.05,
+    "min_effect": 0.02,
+    "max_density": 0.1,
+    "full_tigramite": false
+  },
+  "shape": [
+    360,
+    360
+  ],
+  "edge_count": 3762,
+  "density": 0.029108635097493035,
+  "computed_at": 1788916475.3087592,
+  "data_file": "data/causal_mask_results/pcmci.npz"
+}

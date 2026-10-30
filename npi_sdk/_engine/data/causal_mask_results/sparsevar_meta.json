@@ -1,0 +1,21 @@
+{
+  "version": 3,
+  "key": "sparsevar",
+  "label": "Sparse VAR-Lite",
+  "params": {
+    "max_lag": 2,
+    "max_candidates_per_target": 32,
+    "min_effect": 0.01,
+    "max_density": 0.1,
+    "ridge": 1.0,
+    "min_session_support_ratio": 0.25
+  },
+  "shape": [
+    360,
+    360
+  ],
+  "edge_count": 12924,
+  "density": 0.1,
+  "computed_at": 1787907940.7680292,
+  "data_file": "data/causal_mask_results/sparsevar.npz"
+}

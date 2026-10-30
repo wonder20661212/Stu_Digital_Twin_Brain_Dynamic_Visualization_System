@@ -1,0 +1,44 @@
+﻿parameter,value
+n_seed_windows,64
+lesion_strength,0.5
+horizon,20
+lesion_mode,subtract
+tau,1
+max_candidate_nodes,50
+min_candidate_nodes,30
+top_k_direct_lagged,40
+top_k_response,30
+top_k_fc,0
+w_lagged,1.0
+w_response,0.6
+w_fc,0.0
+tau_min,1
+tau_max,1
+pc_alpha,0.005
+alpha_level,None
+min_lesion_sub_nodes,8
+max_lesion_sub_nodes,30
+expand_to_second_order,True
+max_edges,20
+prune_alpha_level,0.01
+strong_quantile,0.8
+causal_weight,0.8
+fc_weight,0.2
+max_direct_lesion_edges,35
+alpha_traj,1.0
+beta_fc,0.8
+lambda_node,0.0
+lambda_strength,0.01
+lambda_temporal,0.0
+signs,"(-1, 1)"
+strengths,"(0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7)"
+schedules,"('constant', 'early_pulse', 'middle_pulse', 'late_pulse', 'ramp_up', 'ramp_decay', 'exponential_decay')"
+run_greedy,True
+max_interventions,3
+top_m_per_step,20
+min_marginal_gain,0.0001
+force_accept_first,True
+random_state,123
+batch_size,256
+standardize,auto
+stage2_selection_level,level3_core_direct

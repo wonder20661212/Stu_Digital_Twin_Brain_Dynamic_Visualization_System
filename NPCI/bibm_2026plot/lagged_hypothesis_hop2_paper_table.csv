@@ -1,0 +1,4 @@
+﻿ROI size,Screen nodes,Full edges,Local edges,Intersection,Recall,Precision,Jaccard,Speedup,Top-50 Recall,Top-100 Recall,Top-200 Recall
+30,18,633,242,241,0.381,0.996,0.38,5.33,0.58,0.43,0.45
+45,27,1430,586,560,0.392,0.956,0.385,8.76,0.66,0.6,0.555
+60,36,2462,1031,986,0.4,0.956,0.393,12.14,0.82,0.8,0.76

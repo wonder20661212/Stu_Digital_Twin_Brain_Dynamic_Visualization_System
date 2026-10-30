@@ -1,0 +1,73 @@
+{
+  "project": "F:\\脑扰动可视化2.0",
+  "started_at": "2026-08-13 11:53:52",
+  "cache": {
+    "granger": {
+      "shape": [
+        360,
+        360
+      ],
+      "edges": 15509,
+      "density": 0.120002
+    },
+    "vargranger": {
+      "shape": [
+        360,
+        360
+      ],
+      "edges": 15509,
+      "density": 0.120002
+    },
+    "pcmci": {
+      "shape": [
+        360,
+        360
+      ],
+      "edges": 3762,
+      "density": 0.029109
+    },
+    "sparsevar": {
+      "shape": [
+        360,
+        360
+      ],
+      "edges": 12924,
+      "density": 0.1
+    }
+  },
+  "derived": {
+    "consensus": {
+      "ok": true,
+      "shape": [
+        360,
+        360
+      ],
+      "edges": 5568,
+      "density": 0.043083,
+      "sources": [
+        "granger",
+        "vargranger",
+        "pcmci",
+        "sparsevar"
+      ]
+    },
+    "ensemble": {
+      "ok": true,
+      "shape": [
+        360,
+        360
+      ],
+      "edges": 0,
+      "density": 0.0,
+      "sources": [
+        "granger",
+        "vargranger",
+        "pcmci",
+        "sparsevar"
+      ]
+    }
+  },
+  "finished_at": "2026-08-13 12:10:51",
+  "cache_file": "F:\\脑扰动可视化2.0\\data\\causal_masks_default.npz",
+  "cache_meta_file": "F:\\脑扰动可视化2.0\\data\\causal_masks_default_meta.json"
+}

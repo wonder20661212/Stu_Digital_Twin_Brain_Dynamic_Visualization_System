@@ -1,0 +1,25 @@
+# Core scientific stack
+numpy>=1.26
+pandas>=2.2
+scipy>=1.12
+
+# Deep learning
+# Keep the torch spec portable across local and server installs.
+# On GPU servers, prefer installing the CUDA-matched wheel explicitly first.
+torch>=2.2,<2.13
+
+# Neuroimaging and causal inference
+nilearn>=0.10
+nibabel>=5.2
+tigramite>=5.2
+
+# Visualization and graph analysis
+matplotlib>=3.8
+seaborn>=0.13
+networkx>=3.2
+
+# Validation and notebook execution
+scikit-learn>=1.4
+nbformat>=5.10
+nbclient>=0.10
+jupyter>=1.1

@@ -1,0 +1,39 @@
+{
+  "version": 3,
+  "defaults": {
+    "granger": {
+      "max_lag": 3,
+      "alpha": 0.05,
+      "min_effect": 0.001,
+      "max_density": 0.12,
+      "max_candidates_per_target": null
+    },
+    "vargranger": {
+      "max_lag": 8,
+      "alpha": 0.05,
+      "min_effect": 0.001,
+      "max_density": 0.12
+    },
+    "pcmci": {
+      "max_lag": 2,
+      "alpha": 0.05,
+      "min_effect": 0.02,
+      "max_density": 0.1,
+      "full_tigramite": false
+    },
+    "sparsevar": {
+      "max_lag": 2,
+      "max_candidates_per_target": 32,
+      "min_effect": 0.01,
+      "max_density": 0.1,
+      "ridge": 1.0,
+      "min_session_support_ratio": 0.25
+    }
+  },
+  "computed_keys": [
+    "granger",
+    "vargranger",
+    "pcmci",
+    "sparsevar"
+  ]
+}

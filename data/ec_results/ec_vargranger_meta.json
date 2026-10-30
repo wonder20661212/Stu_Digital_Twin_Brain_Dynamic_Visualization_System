@@ -1,0 +1,7 @@
+{
+  "mode": "vargranger",
+  "mode_label": "VAR-Granger-screened NPI",
+  "screen_first": true,
+  "updated_at": 1787908294.5839295,
+  "file": "E:\\脑扰动可视化2.0\\data\\ec_results\\ec_vargranger.npz"
+}

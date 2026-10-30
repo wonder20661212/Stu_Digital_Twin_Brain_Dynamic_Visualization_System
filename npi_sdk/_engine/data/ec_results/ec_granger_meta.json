@@ -1,0 +1,7 @@
+{
+  "mode": "granger",
+  "mode_label": "Granger-screened NPI",
+  "screen_first": true,
+  "updated_at": 1787908294.5519054,
+  "file": "E:\\脑扰动可视化2.0\\data\\ec_results\\ec_granger.npz"
+}

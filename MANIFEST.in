@@ -1,0 +1,14 @@
+include README.md
+include SDK_README.md
+include LICENSE
+include requirements.txt
+include requirements-train-py312.txt
+include data/*.npz
+include data/*.json
+include data/*.nii
+graft data/ec_results
+graft data/causal_mask_results
+graft data/npci_intervention_results
+graft real_fMRI_data
+graft templates
+graft npi_sdk/_engine

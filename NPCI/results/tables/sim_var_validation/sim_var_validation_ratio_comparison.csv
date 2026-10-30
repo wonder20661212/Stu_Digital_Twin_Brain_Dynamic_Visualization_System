@@ -1,0 +1,4 @@
+﻿Config,Screen nodes,Compression ratio,Lesion node coverage,Lesion edge coverage,Global edge coverage,Screening node FPR,Recall,Precision,FPR,AUPRC,AUROC,Lesion recall,Lesion Jaccard,Speedup
+ratio=0.55,24.7,0.546,0.673,0.624,0.49,0.195,0.49,0.885,0.002,0.509,0.745,0.624,0.58,3.05
+ratio=0.70,31.3,0.696,0.792,0.773,0.657,0.447,0.657,0.875,0.004,0.67,0.828,0.773,0.697,1.94
+ratio=0.75,33.7,0.746,0.831,0.804,0.706,0.522,0.706,0.873,0.004,0.717,0.852,0.804,0.714,1.82

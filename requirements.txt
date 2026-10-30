@@ -1,0 +1,18 @@
+# Full runtime dependencies for the SDK, Flask visualizer, saved-data browsing,
+# and NPI retraining.
+# SDK support target: Python 3.9 and above.
+Flask>=2.3,<4
+Flask-Cors>=4,<7
+numpy>=1.24,<3
+scipy>=1.10,<2
+nibabel>=5.1,<6
+scikit-image>=0.21,<1
+pandas>=1.5,<3
+torch>=2.2,<3
+
+# Notebook and analysis helpers used by the original demos.
+matplotlib>=3.7,<4
+seaborn>=0.12,<1
+tigramite>=5.2,<6
+nilearn>=0.10,<1
+jupyter>=1.0,<2
