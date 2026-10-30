@@ -1,2 +1,0 @@
-﻿n_lesions,n_ok,n_success,success_rate,mean_traj_recovery,std_traj_recovery,mean_fc_recovery,std_fc_recovery,mean_n_core_edges,std_n_core_edges,mean_direct_lesion_edges,std_direct_lesion_edges,mean_n_candidates,mean_policy_size
-8,8,8,1.0,0.4414104079521694,0.09183128910489145,0.46426047412820726,0.10643434553493579,20.0,0.0,8.125,4.051013982414068,15.25,1.5

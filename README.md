@@ -1,218 +1,235 @@
-# NPI
+# 数字孪生脑因果分析与动态干预可视化系统
 
-[Mapping effective connectivity by virtually perturbing a surrogate brain](https://www.nature.com/articles/s41592-025-02654-x)
+> 脑影像驱动的因果分析与虚拟干预平台
 
-## **Abstract**
+本项目面向功能磁共振脑网络分析与数字孪生脑干预研究，提供从脑影像数据、因果网络构建、虚拟扰动、关键节点筛选，到候选干预靶点搜索和恢复效果评价的一体化可视化流程。
 
-Effective connectivity (EC), which reflects the causal interactions between brain regions, is fundamental to understanding information processing in the brain. However, traditional methods for obtaining EC, which rely on neural responses to stimulation, are often invasive or limited in spatial coverage, making them unsuitable for whole-brain EC mapping in humans. To address this gap, we introduce Neural Perturbational Inference (NPI), a data-driven framework for mapping whole-brain EC. NPI employs an artificial neural network trained to model large-scale neural dynamics, serving as a computational surrogate of the brain. By systematically perturbing all regions in the surrogate brain and analyzing the resulting responses in other regions, NPI maps the directionality, strength, and excitatory/inhibitory properties of brain-wide EC. Validation of NPI on generative models with known ground-truth EC demonstrates its superiority over existing methods such as Granger causality and dynamic causal modeling. When applied to resting-state fMRI data across diverse datasets, NPI reveals consistent, structurally supported EC patterns. Furthermore, comparisons with cortico-cortical evoked potentials data show a strong resemblance between NPI-inferred EC and real stimulation propagation patterns. By transitioning from correlational to causal understandings of brain functionality, NPI marks a stride in decoding the brain's functional architecture and facilitating both neuroscience studies and clinical applications.
+项目以神经扰动推断（NPI）为基础能力之一，在此之上完成了多类因果筛选算法、面向功能磁共振数据的 FASK 与 Two-Step 前筛流程、NPCI 动态核心与靶点搜索、恢复评价、三维脑网络展示以及 Python SDK 的系统集成。因此，本仓库不是单独的 NPI 算法复现仓库，而是一个围绕“因果脑网络—虚拟扰动—干预评估”构建的完整研究系统。
 
-## **Introduction**
+> **使用边界：** 本系统属于科研与教学软件，输出结果用于方法研究、假设生成和方案比较，不能替代临床诊断、治疗决策或真实神经刺激实验。
 
-<img src=".\img\NPI_framework.jpg" alt="NPI_framework" style="zoom:80%;" />
+## 核心功能
 
-This repository contains the code and documentation of the NPI framework, a tool designed for mapping whole-brain EC in the brain. NPI operates by first training an ANN to mimic the complex dynamics of the brain based on the observed neural data. Once trained, virtual perturbations are applied to specific regions of the ANN to simulate the effect of neural stimulation. By monitoring the responses in other brain regions, NPI constructs a comprehensive map of the causal relationships, detailing how each area influences others across the brain. This process allows for the assessment of not only the presence but also the direction and excitatory/inhibitory properties of neural connections, contributing to a deeper comprehension of the brain's functional architecture.
+- **全脑因果网络分析**：当前内置数据覆盖 360 个脑区，可分析脑区间的作用方向、连接强度以及兴奋性或抑制性影响。
+- **三种主运行模式**：支持纯 NPI、FASK 前筛后运行 NPI、Two-Step 前筛后运行 NPI。
+- **多算法因果骨架**：集成 Granger、VAR-Granger、PCMCI-Lite、Sparse VAR-Lite、FASK、Two-Step、Consensus、NPI-Ensemble 和 NPCI 等分析入口。
+- **虚拟脑区扰动**：支持多档扰动强度，观察指定脑区扰动后的全脑传播与网络响应。
+- **关键节点筛选**：基于当前因果骨架和扰动响应筛选最强节点，并将结果直接传递给后续靶点分析。
+- **C阶段靶点搜索**：围绕病灶脑区生成动态局部核心，比较候选节点、刺激方向、强度和时序策略。
+- **D阶段恢复评价**：展示轨迹恢复、功能连接恢复、脑区级恢复以及干预前后的网络差异。
+- **三维交互可视化**：展示脑区节点、有向连接、正负作用、传播路径、动态核心和候选靶点。
+- **预计算与缓存隔离**：不同运行模式、算法角色和局部/全脑结果分别保存，避免跨模式误读。
+- **Python SDK**：通过 `NPIClient` 读取预计算结果、调用因果算法、构建网络数据并启动完整网页系统。
 
-## **Methodology**
+## 系统流程
 
-<img src=".\img\dynamics.gif" alt="dynamics" style="zoom:100%;" />
-
-1. **Utilize an ANN to serve as a surrogate brain.**
-
-   NPI utilizes ANN to learn the brain’s complex, nonlinear dynamics directly from data. This approach allows NPI to adapt to a wide range of data types and dynamics. The use of advanced AI techniques, such as pre-training (to train a group-level surrogate model) and fine-tuning (to obtain individual-level surrogate models), further enhances our model’s applicability to both group-level and individual-level analyses.
-
-2. **Apply virtual perturbation to ANN for inferring EC.**
-
-   NPI provides flexibility in the pattern of perturbations once the surrogate model is well-trained. It is not constrained to a fixed-size perturbation and can accommodate various forms and scales of perturbations, tailored to specific research needs. This adaptability enhances NPI’s applicability across diverse experimental settings and research questions.
-
-## **Requirements**
-
-**Operating Systems**: Windows 10+, Ubuntu 20.04+
-
-**Python Version Plan**
-
-- **Python 3.10.x / 3.11.x / 3.12.x**: recommended for the SDK, including PyTorch-based NPI retraining and regenerating EC from raw fMRI text files.
-- **Python 3.13+**: use only when the target machine has compatible PyTorch wheels available.
-
-**Dependency Files**
-
-- `requirements.txt`: full source-runtime dependencies, including `torch>=2.2,<3`.
-
-**Non-standard Hardware Requirements**: No non-standard hardware is required to start the visualizer. A GPU-capable PyTorch install is still recommended for long NPI training jobs.
-
-## **Installation**
-
-### Install And Start
-
-Use this path for the SDK, the web UI, saved results, and recomputation workflows.
-
-1. Install Python 3.10.x, 3.11.x, or 3.12.x.
-2. Create a virtual environment:
-
-   ```powershell
-   py -3.12 -m venv .venv
-   ```
-
-3. Install the full dependency set:
-
-   ```powershell
-   .\.venv\Scripts\python.exe -m pip install -r requirements.txt
-   ```
-
-4. Start the app:
-
-   ```powershell
-   .\.venv\Scripts\python.exe app.py
-   ```
-
-## **How to run**
-
-### Web visualizer
-
-Start the Flask server with one of the commands above, then open `http://127.0.0.1:5002/`.
-
-Notes:
-
-- The app now resolves `data/brain9.nii`, `data/ec_data.npz`, `templates/index.html`, and `real_fMRI_data/*.txt` relative to the project directory.
-- You can override data locations with environment variables:
-  - `NPI_DATA_DIR`
-  - `NPI_BRAIN_MODEL_FILE`
-  - `NPI_FMRI_DIR`
-- If you press the "start computation" action without PyTorch installed, the app will return a clear error telling you to install `torch>=2.2,<3` or `requirements.txt`.
-
-### Notebook demos
-
-The notebook `.ipynb` files still contain the step-by-step workflow for loading data, training a surrogate brain, simulating long time series under noise-driven conditions, calculating model FC, and perturbing the surrogate brain to obtain EC.
-
-### Causal-discovery algorithm notes
-
-The web app provides several causal screening masks for comparing or filtering NPI-inferred EC. Interpret them as statistical screening tools rather than ground-truth causal proof.
-
-- Default precompute order is Granger, VAR-Granger, PCMCI-Lite, then Sparse VAR-Lite. These are all directed lagged time-series screens, which best match the NPI-first fMRI causal-skeleton workflow.
-- Pairwise Granger and VAR-Granger combine evidence across fMRI sessions with Fisher's method, apply Benjamini-Hochberg FDR correction across directed ROI pairs, and require non-trivial effect size. The web defaults cap Granger-style mask density to avoid treating tiny but statistically significant fMRI effects as useful causal skeleton edges.
-- VAR-Granger caps the lag order to preserve degrees of freedom for 360-ROI data, then uses block coefficient F/Wald tests.
-- PCMCI-Lite builds lagged matrices separately inside each fMRI session, limits parent candidates by lagged correlation, caps conditioning sets, and combines session-level p-values. This preserves the main temporal-conditioning idea while keeping full-brain visualization tractable.
-- Sparse VAR-Lite uses candidate-limited ridge VAR coefficients to add a sparse directed lagged screen. It is available as an individual front-end screening option and also contributes to the consensus evidence.
-- The front-end exposes a `Consensus` option that requires all four default evidence sources. Consensus uses weighted agreement across Granger, VAR-Granger, PCMCI-Lite, and Sparse VAR-Lite, then shows compact evidence summaries: average consensus score, average algorithm support, high-confidence edge count, and source algorithms.
-- The `Ensemble` option combines NPI virtual-intervention evidence with the temporal causal screens. NPI evidence is computed from row-normalized directed EC magnitude across perturbation strengths and sign consistency; temporal evidence comes from the weighted causal-screen consensus. The default filter requires NPI support plus at least one causal-screen source and caps density for a conservative directed skeleton.
-- PC, FCI, NOTEARS, LiNGAM, and DirectLiNGAM are kept as code-level exploratory routines only. They are disabled in the main web workflow because they are slower, weaker for the current lagged fMRI causal-skeleton task, partially directed rather than cleanly directed, or redundant for the current NPI-first design.
-- FASK and Two-Step are treated separately as fMRI-native algorithms. In the web UI and SDK they can be used as pre-screen modes before NPI, or as ordinary comparison algorithms after NPI, with caches separated by `pipeline_mode`.
-
-To run the lightweight algorithm validation suite:
-
-```powershell
-py -3.13 validate_causal_algorithms.py
+```text
+功能磁共振时间序列
+        │
+        ├─ 纯 NPI
+        ├─ FASK 前筛 → NPI
+        └─ Two-Step 前筛 → NPI
+                    │
+                    ▼
+          B阶段：因果骨架与关键节点
+                    │
+                    ▼
+          NPCI：病灶响应与动态局部核心
+                    │
+                    ▼
+          C阶段：候选靶点与刺激策略搜索
+                    │
+                    ▼
+          D阶段：恢复轨迹与网络恢复评价
+                    │
+                    ▼
+             三维可视化与结果保存
 ```
 
-### Python SDK
+### 三种主运行模式
 
-The project also exposes the distributable `npi-brain-sdk` package in
-`npi_sdk/`. It follows the earlier user-facing SDK shape: a single
-`NPIClient` can read bundled EC data, use cached causal masks, build network
-payloads, and start the bundled web visualizer.
+| 模式 | 主流程 | 未选中的功能磁共振算法 |
+|---|---|---|
+| 纯 NPI | 直接使用 NPI 有效连接 | FASK 和 Two-Step 均可作为普通比较算法 |
+| FASK 前筛 | 原始数据 → FASK 骨架 → NPI | Two-Step 可继续作为普通算法使用 |
+| Two-Step 前筛 | 原始数据 → Two-Step 骨架 → NPI | FASK 可继续作为普通算法使用 |
 
-Install it from the project root:
+运行模式会同时控制后续 B、C、D 阶段。不同模式的有效连接、因果骨架、局部筛选和 NPCI 结果分别缓存，不会自动复用其他模式的结果。
+
+## 分析方法
+
+| 方法 | 在系统中的作用 | 环境说明 |
+|---|---|---|
+| NPI | 通过代理脑模型和虚拟扰动估计有效连接 | 重新训练需要 PyTorch |
+| Granger | 两两滞后预测筛选 | Python |
+| VAR-Granger | 多变量滞后方向筛选 | Python |
+| PCMCI-Lite | 候选受限的时间条件独立筛选 | Python / Tigramite |
+| Sparse VAR-Lite | 稀疏多变量滞后支持 | Python |
+| FASK | 非高斯方向判别并支持反馈边 | 需要 Java 运行环境 |
+| Two-Step | 自适应稀疏估计与独立成分方向恢复 | 需要单独安装并授权的 MATLAB |
+| Consensus | 汇总多种时间序列筛选证据 | Python |
+| NPI-Ensemble | 融合虚拟扰动证据与时间序列证据 | Python |
+| NPCI | 病灶响应、动态核心、靶点搜索与恢复评价 | Python |
+
+这些方法提供的是统计或模型层面的因果证据，不等同于真实干预实验中的因果证明。
+
+## 快速开始
+
+### 1. 获取代码和大文件
+
+仓库中的 Java 算法包使用 Git LFS 管理。首次克隆前请安装 Git LFS：
+
+```powershell
+git lfs install
+git clone https://github.com/wonder20661212/Stu_Digital_Twin_Brain_Dynamic_Visualization_System.git
+cd Stu_Digital_Twin_Brain_Dynamic_Visualization_System
+git lfs pull
+```
+
+### 2. 创建 Python 环境
+
+建议使用 Python 3.10、3.11 或 3.12。以下示例使用 Python 3.12：
+
+```powershell
+py -3.12 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install --upgrade pip
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+### 3. 启动系统
+
+```powershell
+.\.venv\Scripts\python.exe app.py
+```
+
+浏览器打开：
+
+```text
+http://127.0.0.1:5002/
+```
+
+可通过以下环境变量覆盖默认路径或端口：
+
+- `NPI_DATA_DIR`
+- `NPI_BRAIN_MODEL_FILE`
+- `NPI_FMRI_DIR`
+- `NPI_HOST`
+- `NPI_PORT`
+
+## 外部运行环境
+
+### FASK
+
+项目已包含 FASK 调用代码与 Tetrad 运行包，但用户电脑仍需安装 Java。缺少 Java 时，其他 Python 算法、NPI、NPCI 和已保存结果仍可使用。
+
+### Two-Step
+
+项目包含 Two-Step 算法源码和系统适配入口，但不包含 MATLAB。需要重新计算 Two-Step 时，用户必须自行安装并正确授权 MATLAB。没有 MATLAB 时，可以读取已经保存的 Two-Step 结果，但不能重新运行原版算法。
+
+## Python SDK
+
+从项目根目录安装开发版 SDK：
 
 ```powershell
 python -m pip install -e .
 ```
 
-Or install the built wheel:
-
-```powershell
-python -m pip install dist\npi_brain_sdk-0.1.7-py3-none-any.whl
-```
-
-Minimal usage:
+基础示例：
 
 ```python
 from npi_sdk import NPIClient
 
 client = NPIClient()
+
+# 查看内置扰动强度
 print(client.available_strengths())
-print(client.get_ec_matrix(0.2).shape)
-print(client.mask_summary(client.compute_mask("pcmci")))
 
-# SDK 0.1.7 follows the web UI pipeline modes for native fMRI algorithms.
-# FASK / Two-Step caches are separated by pipeline_mode:
-# "none", "fask", and "twostep".
+# 获取有效连接矩阵
+ec = client.get_ec_matrix(0.2)
+print(ec.shape)
+
+# 在指定运行模式下读取或计算因果掩码
 fask_mask = client.compute_mask("fask", pipeline_mode="fask")
-status = client.precompute_causal_status(pipeline_mode="fask")
 
-# Reuse B-stage strongest-node screening as NPCI C/D candidates.
-top_targets = client.top_backbone_target_nodes(0.2, node_idx=0, top_n=10)
-stage_cd = client.npci_intervention(0.2, node_idx=0, target_nodes=top_targets)
-
-# User-safe default precompute only runs Python-native standard algorithms.
-client.precompute_default_masks(group="standard")
-print(client.npci_stage3_defaults())
+# 将B阶段最强节点用于C/D阶段候选靶点
+targets = client.top_backbone_target_nodes(
+    strength=0.2,
+    node_idx=0,
+    top_n=10,
+)
+result = client.npci_intervention(
+    strength=0.2,
+    node_idx=0,
+    target_nodes=targets,
+)
 ```
 
-FASK requires a Java runtime on the target machine. Two-Step still requires MATLAB, so it is not run by the SDK's default precompute path.
-
-Start the SDK web visualizer:
+启动 SDK 内置网页：
 
 ```powershell
 npi-demo web --host 127.0.0.1 --port 5002
 ```
 
-or:
+更多接口与安装说明见：
 
-```python
-from npi_sdk import NPIClient
+- [SDK 具体操作说明](./SDK_具体操作说明.md)
+- [SDK API 说明](./SDK_README.md)
+- [FASK / Two-Step 接入说明](./CAUSAL_ALGORITHM_INTEGRATION.md)
+- [SDK 交付说明](./DIGITAL_TWIN_SDK_DELIVERY.md)
 
-NPIClient().run_web_app(host="127.0.0.1", port=5002)
+## 项目结构
+
+```text
+├─ app.py                         # Flask 后端与系统接口
+├─ templates/index.html           # 主前端与三维可视化界面
+├─ data/
+│  ├─ brain9.nii                  # 脑表面模型
+│  ├─ ec_data.npz                 # 当前有效连接数据
+│  ├─ ec_results/                 # 不同运行模式的预计算有效连接
+│  └─ causal_mask_results/        # 因果算法预计算结果
+├─ external_algorithms/
+│  ├─ fask/                       # FASK Java 适配与运行包
+│  └─ two_step/                   # Two-Step MATLAB 源码与适配入口
+├─ NPCI/                          # 动态核心、靶点搜索与恢复评价算法
+├─ npi_sdk/
+│  ├─ client.py                   # SDK 主客户端
+│  ├─ algorithms.py               # 算法函数入口
+│  └─ _engine/                    # SDK 独立运行所需的内置引擎副本
+├─ requirements.txt               # 完整运行依赖
+├─ pyproject.toml                 # SDK 打包配置
+└─ README.md
 ```
 
-The SDK supports Python 3.9 and above. Python 3.10.x, 3.11.x, or 3.12.x is
-recommended for the full PyTorch-based retraining workflow and ordinary web use.
+### 关于 `npi_sdk/_engine`
 
-## **Demo examples**
+`npi_sdk/_engine` 中的 `app.py`、模板、算法和必要数据与项目根目录存在部分重复，这是有意保留的 SDK 运行副本。它保证安装 wheel 后，即使脱离原始项目目录，SDK 仍能启动网页和读取内置资源。删除这些文件会导致独立安装的 SDK 功能不完整，因此它们不属于可直接清理的普通冗余文件。
 
-Demos `NPI_demo(RNN).ipynb` and `NPI_demo(WBM).ipynb` show the application of NPI to simulated data derived from recurrent neural network (RNN) and whole-brain model (WBM) under given structural connectivity (SC). These demos serve to illustrate the process of applying NPI to infer EC, and comparing the NPI-inferred EC with ground-truth EC and SC. Demo `NPI_demo(fMRI).ipynb` shows applying of NPI on real individual fMRI data from HCP dataset to infer individual EC.
+## 数据与缓存
 
-**Demo 1: RNN synthetic data**
+- `data/ec_results/` 保存三种主运行模式及普通算法对应的有效连接结果。
+- `data/causal_mask_results/` 保存全脑或局部因果骨架。
+- `data/npci_intervention_results/` 保存 C/D 阶段结果，默认不提交到 Git，由本地运行自动生成。
+- 原始和派生的大型研究数据默认通过 `.gitignore` 排除。
+- 真实功能磁共振数据在上传或共享前必须确认匿名化和数据授权要求。
 
-- **Overview**: Demo `NPI_demo(RNN).ipynb` applies NPI to ground-truth RNN simulated data. It encompasses the generation of synthetic neural signals, obtaining ground-truth EC by direct perturbation of the RNN, applying NPI to infer EC from the RNN simulated data, and a comparison of the NPI-inferred EC with the ground-truth EC and SC, assessing the accuracy and reliability of the NPI framework in capturing directed causal interactions.
-- **Simulation data resources**: Located in the `RNN_simulation data` folder, we provide the code necessary for using RNN to generate synthetic neural data and ground-truth EC. The folder contains detailed descriptions of the model parameters and simulation process.
+## 当前限制
 
-**Demo 2: WBM synthetic data**
+- 当前内置展示数据采用 360 脑区配置；替换脑图谱时需要同步提供坐标、脑表面和有效连接数据。
+- 全脑 Two-Step 计算可能耗时较长，更适合局部筛选或预计算。
+- FASK 与 Two-Step 的结果受外部运行环境、算法参数和输入数据质量影响。
+- NPCI 恢复评价是模型空间中的虚拟评估，不代表临床治疗效果。
+- 项目优先在 Windows 环境验证；其他系统可能需要调整 Java、MATLAB 和数据路径。
 
-- **Overview**: Demo `NPI_demo(WBM).ipynb` applies NPI to WBM simulated data. It encompasses the generation of synthetic neural signals, obtaining ground-truth EC by direct perturbation of the WBM, applying NPI to infer EC from the WBM simulated data, and a comparison of the NPI-inferred EC with the ground-truth EC and SC, assessing the accuracy and reliability of the NPI framework in capturing direct causal interactions.
-- **Simulation data resources**: Located in the `WBM_simulation data` folder, we provide the code necessary for using RNN to generate synthetic neural data and ground-truth EC. The folder contains detailed descriptions of the model parameters and simulation process.
+## 相关论文与致谢
 
-**Demo 3: fMRI data from HCP dataset**
+本项目使用并扩展了以下研究方法。使用对应算法进行科研发表时，请引用原始论文：
 
-- **Overview**: Demo `NPI_demo(fMRI).ipynb` applies NPI to real fMRI data from HCP dataset of an individual. It encompasses applying NPI to infer EC from BOLD signals of an individual and a comparison of model FC and empirical FC.
+1. Luo, Z., Peng, K., Liang, Z. *et al.* Mapping effective connectivity by virtually perturbing a surrogate brain. *Nature Methods* (2025). https://doi.org/10.1038/s41592-025-02654-x
+2. Sanchez-Romero, R., Ramsey, J. D., Zhang, K. *et al.* Estimating feedforward and feedback effective connections from fMRI time series: Assessments of statistical methods. *Network Neuroscience*. https://doi.org/10.1162/netn_a_00061
 
-**How to run the demos**
+NPI、Tetrad/FASK、Two-Step 及其他第三方组件保留各自的作者署名、引用要求和许可条件。本仓库根目录许可证不应被解释为覆盖所有第三方代码和数据。
 
-1. **Launch Jupyter Notebook**: Start from the project directory by launching the Jupyter Notebook.
-2. **Open the demo notebook**: Select the demo notebook corresponding to either RNN or WBM synthetic data.
-3. **Follow the instructions**: Each notebook provides step-by-step instructions for loading data, training the model, applying NPI, and analyzing results.
-4. **Expected output**: The notebook will display output cells after execution. (Model FC closely resembles empirical FC, while NPI-inferred EC shows a strong correspondence with both ground-truth EC and SC.)
-5. **Expected run time**: Expected total run time for the three demos is approximately 30 minutes on a "normal" desktop computer.
+## 反馈与协作
 
-## **Whole-brain EC resources**
-
-Within the `Whole-brain_EC` directory, we provide EC data across various brain atlases, offering insights into brain connectivity research. The EC matrices represent the causal interactions between different brain regions, derived from resting-state fMRI data of subjects within the Human Connectome Project (HCP) dataset. A row of the EC matrix represents the output EC from a source region to all other regions. A column of the EC matrix represents the input EC from all other regions to a target region.
-
-Specifically, we calculated the EC matrices based on the MMP (360 regions), AAL (116 regions), MSDL (39 regions) atlases across 800 subjects and the Schaefer2018 atlases (with 100, 200, ..., 1000 regions) across 100 subjects. For each atlas, we calculated the individual EC matrices for all subjects and then averaged these matrices at the group level to obtain a representative EC matrix for each atlas. All EC matrices are normalized so that the strongest connection in each matrix has a value of 1.
-
-We provide a notebook file `Whole-brain_EC/Whole-brain_EC.ipynb` that allow for the visualization of these EC matrices. Offering these detailed EC resources, we aim to facilitate research into the structural and functional interplay of the brain and support the development of novel diagnostic and therapeutic strategies in neuroscience.
-
-<img src=".\img\ebc.jpg" alt="NPI_framework" style="zoom:80%;" />
-
-## **How to cite**
-
-If you use NPI in your research, please cite our paper:
-
-- Luo, Z., Peng, K., Liang, Z. *et al.* Mapping effective connectivity by virtually perturbing a surrogate brain. *Nat Methods* (2025). [https://doi.org/10.1038/s41592-025-02654-x](https://doi.org/10.1038/s41592-025-02654-x)
-
-## **Contact**
-
-For any questions/comments, please contact [NCC Lab](https://www.sustech.edu.cn/en/faculties/liuquanying.html).
-
-## **Copyright**
-
-Copyright © 2024 NCC Lab, Southern University of Science and Technology, Shenzhen, China.
+如发现问题或希望改进算法接口、可视化及文档，请通过本仓库的 GitHub Issues 提交可复现的问题描述、运行环境和必要日志。请勿在 Issue 中上传患者数据、账户信息、密钥或其他敏感内容。
 
